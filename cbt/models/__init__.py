@@ -1,2 +1,2 @@
-from .students import Course
-from .questions import Subject, Question
+from .students import Course, Student
+from .questions import Subject, Question, Answer
