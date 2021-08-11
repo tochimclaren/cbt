@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+<title>Create New Examination</title>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <h3>Select Examination</h3>
+        <div class="list-group my-4">
+            {% for examination in examinations %}
+            <a href="#" data-id="{{examination.id}}" class="list-group-item text-white exam list-group-item-action bg-warning" aria-current="true">
+                <div  data-id="{{examination.id}}" class="d-flex w-100 justify-content-between">
+                    <h5  data-id="{{examination.id}}" class="mb-1">{{examination.title}}</h5>
+                    <small  data-id="{{examination.id}}" >3 days ago</small>
+                </div>
+                <p  data-id="{{examination.id}}" class="mb-1">Some placeholder content in a paragraph.</p>
+                <small data-id="{{examination.id}}">And some small print.</small>
+            </a>
+            {% endfor %}
+        </div>
+        <h2 class="text-center my-4">Or</h2>
+        <h3>Create Examination</h3>
+        <form action="" method="post" id="ExaminationForm">
+            {% csrf_token %}
+            {% for field in examination_form %}
+            <div class="mt-2">
+                <label class="text-dark" id="{{field.id_for_label}}">{{field.label_tag}}</label>
+                {% if field.name == "subjects" %} <a
+                    class="ms-2 badge badge-pill mb-1 bg-dark text-white text-decoration-none" href=""
+                    data-bs-toggle="modal" data-bs-target="#subjects"> + new subject</a> {% endif %}
+                {% render_field field class="form-control border-warning form-control-sm" %}
+            </div>
+            {% endfor %}
+            <input class="btn btn-dark btn-sm mt-2" type="submit" value="Add">
+        </form>
+    </div>
+    <div class="col-lg-8 d-none">
+        <h3>Create Question</h3>
+        <form action="" method="post" id="QuestionOptions">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mt-2">
+                <label class="text-dark" id="{{field.id_for_label}}">Question {{field.label_tag}}</label>
+                {% render_field field class="form-control border-warning form-control-sm" cols="20" %}
+            </div>
+            {% endfor %}
+            <div class="row">
+                {{formset.management_form}}
+                {% for forms in formset %}
+                {% for field in forms %}
+                <div class="mt-2 {% if field.name == 'is_correct' %} col-2 {% else %} col-10 {% endif %}">
+                    <label class="text-dark {% if field.name == 'is_correct' %} mt-4 {% else %} mt-2 {% endif %}"
+                        id="{{field.id_for_label}}">{{field.label_tag}}</label>
+                    <br>
+                    {% if field.name == "is_correct" %}
+                    {% render_field field class="w-100" %}
+                    {% else %}
+                    {% render_field field class="form-control form-control-sm border-warning col-10 w-100" placeholder="Option"%}
+                    {% endif %}
+                </div>
+                {% endfor %}
+                {% endfor %}
+            </div>
+            <input class="btn btn-dark btn-sm mt-2" type="submit" value="Save">
+        </form>
+    </div>
+</div>
+
+
+<div class="modal fade" id="subjects" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="subjectsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <h5 class="modal-title" id="subjectsLabel">Subject</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post" class="mx-auto" id="subjectForm">
+                    {% csrf_token %}
+                    <label for="id_text"><label for="id_text">Subject:</label></label>
+                    <input type="text" name="text" maxlength="255" class="form-control" required="" id="id_text">
+                    <div class="my-3"></div>
+
+
+                    <input type="submit" class="btn btn-dark btn-sm mt-2" value="Create">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%  endblock %}
+
+
+{% block script %}
+<script src="{% static 'cbt/js/create_examination.js' %}"></script>
+{% endblock %}

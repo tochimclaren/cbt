@@ -1,1 +1,1 @@
-from .question_views import *
+from .question_views import select_course, exam_hall, final_score, create_examination, create_examination_api

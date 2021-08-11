@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cbt.models import Question, Subject, Student, Course, Answer
+from cbt.models import Examination, Question, Subject, Student, Answer, Department
 
 class AnswerInlineAdmin(admin.TabularInline):
     model = Answer
@@ -17,12 +17,13 @@ admin.site.register(Question, QuestionAdmin)
 #     extra = 0
 
 
-class CourseAdmin(admin.ModelAdmin):
-    # inlines = [SubjectInlineAdmin]
+class ExaminationAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Course, CourseAdmin)
+admin.site.register(Examination, ExaminationAdmin)
+
 
 admin.site.register(Subject)
 admin.site.register(Student)
+admin.site.register(Department)
